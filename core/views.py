@@ -6,3 +6,7 @@ from django.http import HttpResponse
 
 def hello(request):
     return HttpResponse("Hello Django ci/cd!")
+
+
+def bye(request):
+    return HttpResponse("bye djanog/cli")
