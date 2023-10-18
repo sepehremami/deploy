@@ -7,12 +7,21 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+     - name: update-liara
+        env:
+          LIARA_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
+        run: |
+          npm i -g @liara/cli@4
+          liara deploy --app="APP_NAME" --api-token="$LIARA_TOKEN" --detach
+    
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
@@ -23,6 +32,7 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests'
       env:
+        LIARA_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
         SECRET_KEY: 69tgugtg%^fgJO&*&
         DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
         DEBUG_MODE: False
@@ -30,12 +40,3 @@ jobs:
         CACHE_KEY_PREFIX: Halo
       run: |
         python manage.py test
-
-      - name: update-liara
-        env:
-          LIARA_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
-            run: |
-              npm i -g @liara/cli@4
-              liara deploy --app="APP_NAME" --api-token="$LIARA_TOKEN" --detach
-
-
