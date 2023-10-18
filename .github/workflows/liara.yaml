@@ -19,7 +19,8 @@ jobs:
       env:
         LIARA_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
       run: |
-        npx @liara/cli@ deploy --app="APP_NAME" --api-token="$LIARA_TOKEN" --detach
+        npm i -g @liara/cli@4
+        liara deploy --app="testcicd" --api-token="$LIARA_TOKEN" --detach
     
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
