@@ -2,9 +2,9 @@ name: Django CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8, 3.9, 3.11]
 
     steps:
     - uses: actions/checkout@v2
@@ -27,10 +27,8 @@ jobs:
         pip install -r ./web/requirements.txt
     - name: Run Tests'
       env:
+        LIARA_TOKEN: ${{ secrets.LIARA_API_TOKEN }}
         SECRET_KEY: 69tgugtg%^fgJO&*&
-        DB_NAME: mydb
-        DB_USER: userdb
-        DB_PASSWORD: password
         DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
         DEBUG_MODE: False
         TIME_ZONE: Africa/Bangui
